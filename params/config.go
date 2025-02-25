@@ -31,7 +31,7 @@ var (
     SepoliaGenesisHash = common.HexToHash("0x25a5cc106eea7138acab33231d7160d69cb777ee0c2c553fcddf5138993e6dd9")
     RinkebyGenesisHash = common.HexToHash("0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
     GoerliGenesisHash  = common.HexToHash("0xbf7e331f7f7c1dd2e05159666b3bf8bc7a8a3a9eb1d518969eab529dd9b88c1a")
-    DennixGenesisHash  = common.HexToHash("0xYourCustomDennixGenesisHashHere") // Замените на хэш генезиса Dennix
+    DennixGenesisHash  = common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000") // Временный хеш, нужно вычислить
 )
 
 // TrustedCheckpoints associates each known checkpoint with the genesis hash of
@@ -41,7 +41,7 @@ var TrustedCheckpoints = map[common.Hash]*TrustedCheckpoint{
     SepoliaGenesisHash: SepoliaTrustedCheckpoint,
     RinkebyGenesisHash: RinkebyTrustedCheckpoint,
     GoerliGenesisHash:  GoerliTrustedCheckpoint,
-    DennixGenesisHash:  DennixTrustedCheckpoint, // Добавьте для Dennix, если нужны контрольные точки
+    DennixGenesisHash:  DennixTrustedCheckpoint, // Добавлено для Dennix
 }
 
 // CheckpointOracles associates each known checkpoint oracles with the genesis hash of
@@ -50,7 +50,7 @@ var CheckpointOracles = map[common.Hash]*CheckpointOracleConfig{
     MainnetGenesisHash: MainnetCheckpointOracle,
     RinkebyGenesisHash: RinkebyCheckpointOracle,
     GoerliGenesisHash:  GoerliCheckpointOracle,
-    // DennixCheckpointOracle можно добавить, если вы хотите использовать оракулы контрольных точек
+    // DennixCheckpointOracle не добавлен, так как не требуется для PoW сети
 }
 
 func newUint64(val uint64) *uint64 { return &val }
@@ -76,7 +76,7 @@ var (
         LondonBlock:                   big.NewInt(12_965_000),
         ArrowGlacierBlock:             big.NewInt(13_773_000),
         GrayGlacierBlock:              big.NewInt(15_050_000),
-        TerminalTotalDifficulty:       MainnetTerminalTotalDifficulty, // 58_750_000_000_000_000_000_000
+        TerminalTotalDifficulty:       MainnetTerminalTotalDifficulty,
         TerminalTotalDifficultyPassed: true,
         ShanghaiTime:                  newUint64(1681338455),
         Ethash:                        new(EthashConfig),
@@ -226,38 +226,40 @@ var (
 
     // DennixChainConfig contains the chain parameters to run a node on the Dennix network.
     DennixChainConfig = &ChainConfig{
-        ChainID:                       big.NewInt(160000), // Уникальный Chain ID для Dennix
-        HomesteadBlock:                big.NewInt(0),      // Начать с Homestead сразу (или nil для отключения)
-        DAOForkBlock:                  nil,                // Отключить DAO Fork
-        DAOForkSupport:                false,
-        EIP150Block:                   big.NewInt(0),      // Активировать EIP-150 с генезиса
-        EIP155Block:                   big.NewInt(0),      // Активировать EIP-155 с генезиса
-        EIP158Block:                   big.NewInt(0),      // Активировать EIP-158 с генезиса
-        ByzantiumBlock:                big.NewInt(0),      // Активировать Byzantium с генезиса
-        ConstantinopleBlock:           big.NewInt(0),      // Активировать Constantinople с генезиса
-        PetersburgBlock:               big.NewInt(0),      // Активировать Petersburg с генезиса
-        IstanbulBlock:                 big.NewInt(0),      // Активировать Istanbul с генезиса
-        MuirGlacierBlock:              nil,                // Отключить Muir Glacier
-        BerlinBlock:                   big.NewInt(0),      // Активировать Berlin с генезиса
-        LondonBlock:                   big.NewInt(0),      // Активировать London с генезиса
-        ArrowGlacierBlock:             nil,                // Отключить Arrow Glacier
-        GrayGlacierBlock:              nil,                // Отключить Gray Glacier
-        MergeNetsplitBlock:            nil,                // Отключить Merge
-        ShanghaiTime:                  nil,                // Отключить Shanghai (оставить PoW)
-        CancunTime:                    nil,                // Отключить Cancun
-        PragueTime:                    nil,                // Отключить Prague
-        TerminalTotalDifficulty:       nil,                // Отключить переход на PoS (оставить PoW)
-        TerminalTotalDifficultyPassed: false,
-        Ethash:                        nil,                // Заменить на ваш кастомный PoW (например, Keccak)
-        Clique:                        nil,                // Отключить PoA
+        ChainID:             big.NewInt(16000),       // Уникальный ChainID для Dennix
+        HomesteadBlock:      big.NewInt(0),           // Активировать Homestead с генезиса
+        DAOForkBlock:        nil,                     // Отключить DAO Fork
+        DAOForkSupport:      false,                   // Не поддерживать DAO Fork
+        EIP150Block:         big.NewInt(0),           // Активировать EIP-150 с генезиса
+        EIP155Block:         big.NewInt(0),           // Активировать EIP-155 с генезиса
+        EIP158Block:         big.NewInt(0),           // Активировать EIP-158 с генезиса
+        ByzantiumBlock:      big.NewInt(0),           // Активировать Byzantium с генезиса
+        ConstantinopleBlock: big.NewInt(0),           // Активировать Constantinople с генезиса
+        PetersburgBlock:     big.NewInt(0),           // Активировать Petersburg с генезиса
+        IstanbulBlock:       big.NewInt(0),           // Активировать Istanbul с генезиса
+        MuirGlacierBlock:    nil,                     // Отключить Muir Glacier
+        BerlinBlock:         big.NewInt(0),           // Активировать Berlin с генезиса
+        LondonBlock:         big.NewInt(0),           // Активировать London с генезиса
+        ArrowGlacierBlock:   nil,                     // Отключить Arrow Glacier
+        GrayGlacierBlock:    nil,                     // Отключить Gray Glacier
+        MergeNetsplitBlock:  nil,                     // Отключить Merge
+        ShanghaiTime:        nil,                     // Отключить Shanghai (оставить PoW)
+        CancunTime:          nil,                     // Отключить Cancun
+        PragueTime:          nil,                     // Отключить Prague
+        DennixBlock:         big.NewInt(0),           // Активировать Dennix с генезиса
+        TerminalTotalDifficulty:       nil,           // Отключить переход на PoS
+        TerminalTotalDifficultyPassed: false,         // Оставить PoW навсегда
+        Ethash:                        new(EthashConfig), // Использовать Ethash как консенсус
+        Clique:                        nil,              // Отключить Clique
     }
 
-    // DennixTrustedCheckpoint contains the light client trusted checkpoint for the Dennix test network (опционально).
+    // DennixTrustedCheckpoint contains the light client trusted checkpoint for the Dennix network.
+    // Это опционально, оставлено как заглушка для будущей настройки.
     DennixTrustedCheckpoint = &TrustedCheckpoint{
-        SectionIndex: 0, // Настройте под свои нужды
-        SectionHead:  common.HexToHash("0xYourDennixSectionHeadHash"),
-        CHTRoot:      common.HexToHash("0xYourDennixCHTRootHash"),
-        BloomRoot:    common.HexToHash("0xYourDennixBloomRootHash"),
+        SectionIndex: 0, // Начальная контрольная точка, настройте при необходимости
+        SectionHead:  common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
+        CHTRoot:      common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
+        BloomRoot:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
     }
 
     // AllEthashProtocolChanges contains every protocol change (EIPs) introduced
@@ -384,7 +386,7 @@ var NetworkNames = map[string]string{
     RinkebyChainConfig.ChainID.String(): "rinkeby",
     GoerliChainConfig.ChainID.String():  "goerli",
     SepoliaChainConfig.ChainID.String(): "sepolia",
-    DennixChainConfig.ChainID.String():  "dennix", // Обновлено для Dennix
+    DennixChainConfig.ChainID.String():  "dennix", // Добавлено для Dennix
 }
 
 // TrustedCheckpoint represents a set of post-processed trie roots (CHT and
@@ -465,12 +467,10 @@ type ChainConfig struct {
     MergeNetsplitBlock  *big.Int `json:"mergeNetsplitBlock,omitempty"`  // Virtual fork after The Merge to use as a network splitter
 
     // Fork scheduling was switched from blocks to timestamps here
-
     ShanghaiTime *uint64 `json:"shanghaiTime,omitempty"` // Shanghai switch time (nil = no fork, 0 = already on shanghai)
     CancunTime   *uint64 `json:"cancunTime,omitempty"`   // Cancun switch time (nil = no fork, 0 = already on cancun)
     PragueTime   *uint64 `json:"pragueTime,omitempty"`   // Prague switch time (nil = no fork, 0 = already on prague)
-
-    DennixBlock *big.Int `json:"dennixBlock,omitempty"` // Dennix switch block (nil = no fork, 0 = already on dennix)
+    DennixBlock  *big.Int `json:"dennixBlock,omitempty"`  // Dennix switch block (nil = no fork, 0 = already on dennix)
 
     // TerminalTotalDifficulty is the amount of total difficulty reached by
     // the network that triggers the consensus upgrade.
@@ -518,7 +518,7 @@ func (c *ChainConfig) Description() string {
     switch {
     case c.Ethash != nil:
         if c.TerminalTotalDifficulty == nil {
-            banner += "Consensus: DennixHash (proof-of-work)\n" // Изменено на DennixHash
+            banner += "Consensus: Ethash (proof-of-work)\n"
         } else if !c.TerminalTotalDifficultyPassed {
             banner += "Consensus: Beacon (proof-of-stake), merging from Ethash (proof-of-work)\n"
         } else {
@@ -537,9 +537,7 @@ func (c *ChainConfig) Description() string {
     }
     banner += "\n"
 
-    // Create a list of forks with a short description of them. Forks that only
-    // makes sense for mainnet should be optional at printing to avoid bloating
-    // the output for testnets and private networks.
+    // Create a list of forks with a short description of them.
     banner += "Pre-Merge hard forks (block based):\n"
     banner += fmt.Sprintf(" - Homestead:                   #%-8v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/homestead.md)\n", c.HomesteadBlock)
     if c.DAOForkBlock != nil {
@@ -563,9 +561,12 @@ func (c *ChainConfig) Description() string {
     if c.GrayGlacierBlock != nil {
         banner += fmt.Sprintf(" - Gray Glacier:                #%-8v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/gray-glacier.md)\n", c.GrayGlacierBlock)
     }
+    if c.DennixBlock != nil {
+        banner += fmt.Sprintf(" - Dennix:                      #%-8v (custom Dennix fork)\n", c.DennixBlock)
+    }
     banner += "\n"
 
-    // Add a special section for the merge as it's non-obvious
+    // Add a special section for the merge
     if c.TerminalTotalDifficulty == nil {
         banner += "The Merge is not yet available for this network!\n"
         banner += " - Hard-fork specification: https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md\n"
@@ -590,9 +591,6 @@ func (c *ChainConfig) Description() string {
     }
     if c.PragueTime != nil {
         banner += fmt.Sprintf(" - Prague:                      @%-10v\n", *c.PragueTime)
-    }
-    if c.DennixBlock != nil {
-        banner += fmt.Sprintf(" - Dennix:                      #%-8v\n", c.DennixBlock)
     }
     return banner
 }
@@ -682,12 +680,12 @@ func (c *ChainConfig) IsShanghai(time uint64) bool {
     return isTimestampForked(c.ShanghaiTime, time)
 }
 
-// IsCancun returns whether num is either equal to the Cancun fork time or greater.
+// IsCancun returns whether time is either equal to the Cancun fork time or greater.
 func (c *ChainConfig) IsCancun(time uint64) bool {
     return isTimestampForked(c.CancunTime, time)
 }
 
-// IsPrague returns whether num is either equal to the Prague fork time or greater.
+// IsPrague returns whether time is either equal to the Prague fork time or greater.
 func (c *ChainConfig) IsPrague(time uint64) bool {
     return isTimestampForked(c.PragueTime, time)
 }
@@ -722,14 +720,13 @@ func (c *ChainConfig) CheckCompatible(newcfg *ChainConfig, height uint64, time u
     return lasterr
 }
 
-// CheckConfigForkOrder checks that we don't "skip" any forks, geth isn't pluggable enough
-// to guarantee that forks can be implemented in a different order than on official networks
+// CheckConfigForkOrder checks that we don't "skip" any forks.
 func (c *ChainConfig) CheckConfigForkOrder() error {
     type fork struct {
         name      string
-        block     *big.Int // forks up to - and including the merge - were defined with block numbers
-        timestamp *uint64  // forks after the merge are scheduled using timestamps
-        optional  bool     // if true, the fork may be nil and next fork is still allowed
+        block     *big.Int
+        timestamp *uint64
+        optional  bool
     }
     var lastFork fork
     for _, cur := range []fork{
@@ -747,15 +744,14 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
         {name: "londonBlock", block: c.LondonBlock},
         {name: "arrowGlacierBlock", block: c.ArrowGlacierBlock, optional: true},
         {name: "grayGlacierBlock", block: c.GrayGlacierBlock, optional: true},
+        {name: "dennixBlock", block: c.DennixBlock}, // Добавлено для Dennix
         {name: "mergeNetsplitBlock", block: c.MergeNetsplitBlock, optional: true},
         {name: "shanghaiTime", timestamp: c.ShanghaiTime},
         {name: "cancunTime", timestamp: c.CancunTime, optional: true},
         {name: "pragueTime", timestamp: c.PragueTime, optional: true},
-        {name: "dennixBlock", block: c.DennixBlock}, // Добавлено для Dennix
     } {
         if lastFork.name != "" {
             switch {
-            // Non-optional forks must all be present in the chain config up to the last defined fork
             case lastFork.block == nil && lastFork.timestamp == nil && (cur.block != nil || cur.timestamp != nil):
                 if cur.block != nil {
                     return fmt.Errorf("unsupported fork ordering: %v not enabled, but %v enabled at block %v",
@@ -764,8 +760,6 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
                     return fmt.Errorf("unsupported fork ordering: %v not enabled, but %v enabled at timestamp %v",
                         lastFork.name, cur.name, *cur.timestamp)
                 }
-
-            // Fork (whether defined by block or timestamp) must follow the fork definition sequence
             case (lastFork.block != nil && cur.block != nil) || (lastFork.timestamp != nil && cur.timestamp != nil):
                 if lastFork.block != nil && lastFork.block.Cmp(cur.block) > 0 {
                     return fmt.Errorf("unsupported fork ordering: %v enabled at block %v, but %v enabled at block %v",
@@ -774,15 +768,12 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
                     return fmt.Errorf("unsupported fork ordering: %v enabled at timestamp %v, but %v enabled at timestamp %v",
                         lastFork.name, *lastFork.timestamp, cur.name, *cur.timestamp)
                 }
-
-                // Timestamp based forks can follow block based ones, but not the other way around
                 if lastFork.timestamp != nil && cur.block != nil {
                     return fmt.Errorf("unsupported fork ordering: %v used timestamp ordering, but %v reverted to block ordering",
                         lastFork.name, cur.name)
                 }
             }
         }
-        // If it was optional and not set, then ignore it
         if !cur.optional || (cur.block != nil || cur.timestamp != nil) {
             lastFork = cur
         }
@@ -819,8 +810,6 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, 
         return newBlockCompatError("Constantinople fork block", c.ConstantinopleBlock, newcfg.ConstantinopleBlock)
     }
     if isForkBlockIncompatible(c.PetersburgBlock, newcfg.PetersburgBlock, headNumber) {
-        // the only case where we allow Petersburg to be set in the past is if it is equal to Constantinople
-        // mainly to satisfy fork ordering requirements which state that Petersburg fork be set if Constantinople fork is set
         if isForkBlockIncompatible(c.ConstantinopleBlock, newcfg.PetersburgBlock, headNumber) {
             return newBlockCompatError("Petersburg fork block", c.PetersburgBlock, newcfg.PetersburgBlock)
         }
@@ -878,8 +867,7 @@ func isForkBlockIncompatible(s1, s2, head *big.Int) bool {
 }
 
 // isBlockForked returns whether a fork scheduled at block s is active at the
-// given head block. Whilst this method is the same as isTimestampForked, they
-// are explicitly separate for clearer reading.
+// given head block.
 func isBlockForked(s, head *big.Int) bool {
     if s == nil || head == nil {
         return false
@@ -904,8 +892,7 @@ func isForkTimestampIncompatible(s1, s2 *uint64, head uint64) bool {
 }
 
 // isTimestampForked returns whether a fork scheduled at timestamp s is active
-// at the given head timestamp. Whilst this method is the same as isBlockForked,
-// they are explicitly separate for clearer reading.
+// at the given head timestamp.
 func isTimestampForked(s *uint64, head uint64) bool {
     if s == nil {
         return false
@@ -923,7 +910,7 @@ func configTimestampEqual(x, y *uint64) bool {
     return *x == *y
 }
 
-// ConfigCompatError is raised if the locally-stored blockchain is initialised with a
+// ConfigCompatError is raised if the locally-stored blockchain is initialized with a
 // ChainConfig that would alter the past.
 type ConfigCompatError struct {
     What string
@@ -995,7 +982,7 @@ func (err *ConfigCompatError) Error() string {
 // Rules wraps ChainConfig and is merely syntactic sugar or can be used for functions
 // that do not have or require information about the block.
 //
-// Rules is a one time interface meaning that it shouldn't be used in between transition
+// Rules is a one-time interface meaning that it shouldn't be used in between transition
 // phases.
 type Rules struct {
     ChainID                                                 *big.Int
@@ -1003,7 +990,7 @@ type Rules struct {
     IsByzantium, IsConstantinople, IsPetersburg, IsIstanbul bool
     IsBerlin, IsLondon                                      bool
     IsMerge, IsShanghai, IsCancun, IsPrague                 bool
-    IsDennix                                                bool
+    IsDennix                                                bool // Добавлено для Dennix
 }
 
 // Rules ensures c's ChainID is not nil.
@@ -1031,3 +1018,9 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules 
         IsDennix:         c.IsDennix(num), // Добавлено для Dennix
     }
 }
+
+// DefaultBaseFeeChangeDenominator is the default value for the base fee change denominator.
+const DefaultBaseFeeChangeDenominator = 8
+
+// DefaultElasticityMultiplier is the default value for the elasticity multiplier.
+const DefaultElasticityMultiplier = 2
